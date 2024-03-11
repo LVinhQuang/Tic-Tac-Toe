@@ -42,7 +42,7 @@ export default function SignUp() {
     console.log({
       fullname,email,password
     });
-    axios.post(`http://localhost:5000`,{
+    axios.post(`http://localhost:5000/auth/signup`,{
       fullname:  fullname,
       email: email,
       password: password
