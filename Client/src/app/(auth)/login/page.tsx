@@ -14,6 +14,9 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import bgImg from './catbox.jpg'
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 function Copyright(props: any) {
   return (
@@ -32,14 +35,23 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
+  const router = useRouter();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+    const email = data.get('email');
+    const password = data.get('password')
+    axios.post(`http://localhost:5000/auth/login`,{
+      email: email,
+      password: password
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        console.log("SUCCESS")
+        router.push('/')
+      }
+    })
+    }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -51,7 +63,7 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+            backgroundImage: `url(${bgImg.src})`,
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -106,6 +118,7 @@ export default function SignInSide() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                style={{backgroundColor: 'blue'}}
               >
                 Sign In
               </Button>

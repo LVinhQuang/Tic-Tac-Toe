@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 function Copyright(props: any) {
   return (
@@ -33,22 +34,22 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const router = useRouter();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const fullname = data.get('fullname');
     const email = data.get('email');
     const password = data.get('password');
-    console.log({
-      fullname,email,password
-    });
     axios.post(`http://localhost:5000/auth/signup`,{
       fullname:  fullname,
       email: email,
       password: password
     })
     .then((response) => {
-      console.log(response)
+      if (response.status === 200) {
+        router.push('/login')
+      }
     })
     .catch((error) => {
       console.log(error)
@@ -119,6 +120,7 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              style={{backgroundColor: 'blue'}}
             >
               Sign Up
             </Button>
