@@ -1,5 +1,6 @@
 import accountM from '../models/account.m.js'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 export default {
     signup: (req,res,next) => {
@@ -19,23 +20,13 @@ export default {
         }
     },
     login: async (req,res,next) => {
-        try {
-            const acc = req.body;
-            console.log(acc);
-            const user = await accountM.findOne({email:acc.email });
-            if (!user) {
-                return res.status(404).send('User not found')
-            }
-            console.log(user);
-            if (!bcrypt.compareSync(acc.password, user.password)) {
-                return res.status(401).send('Wrong password')
-            }
-            res.status(200).send('OK')
-        }
-        catch(e) {
-            console.log(e);
-            res.status(501).send('FAIL')
-            next(e);
-        }
+        const user = req.user;
+        res.json({user: user, message: 'Logged in'})
+    },
+    logout: async (req,res,next) => {
+        req.logout(function(err) {
+            if (err) return next(err);
+        });
+        res.json({message: 'Logged out'})
     }
 }

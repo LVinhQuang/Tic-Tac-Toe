@@ -17,6 +17,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import bgImg from './catbox.jpg'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { useContext } from 'react';
 
 function Copyright(props: any) {
   return (
@@ -35,23 +36,25 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
+
   const router = useRouter();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get('email');
     const password = data.get('password')
-    axios.post(`http://localhost:5000/auth/login`,{
+    axios.post(`http://localhost:5000/auth/login`, {
       email: email,
       password: password
     })
-    .then((response) => {
-      if (response.status === 200) {
-        console.log("SUCCESS")
-        router.push('/')
-      }
-    })
-    }
+      .then((response) => {
+        if (response.status === 200) {
+          
+          router.push('/');
+        }
+      })
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -118,7 +121,7 @@ export default function SignInSide() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                style={{backgroundColor: 'blue'}}
+                style={{ backgroundColor: 'blue' }}
               >
                 Sign In
               </Button>
