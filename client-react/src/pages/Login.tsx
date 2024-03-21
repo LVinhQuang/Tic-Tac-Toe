@@ -15,7 +15,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import bgImg from './catbox.jpg'
-import { BACKEND_SERVER } from '../backendkey'
+import { BACKEND_SERVER, GOOGLE_API } from '../backendkey'
 import useUserStore from '../stores/UserStore'
 
 function Copyright(props: any) {
@@ -44,11 +44,10 @@ export default function Login() {
         const email = data.get('email');
         const password = data.get('password')
         const backendUrl = BACKEND_SERVER + `/auth/login`
-        console.log(backendUrl);
         axios.post(backendUrl, {
             email: email,
             password: password
-        })
+        },{withCredentials: true})
             .then((response) => {
                 if (response.status === 200) {
                     setUserDetails({ isLoggedIn: true, user: response.data });
@@ -56,7 +55,9 @@ export default function Login() {
                 }
             })
     }
-
+    const loginWithGoogle = () => {
+        window.open(GOOGLE_API, "_self");
+    }
     return (
         <ThemeProvider theme={defaultTheme}>
             <Grid container component="main" sx={{ height: '100vh' }}>
@@ -128,9 +129,16 @@ export default function Login() {
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
+                                    <Button
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        sx={{ mt: 3, mb: 2 }}
+                                        style={{ backgroundColor: 'red' }}
+                                        onClick={loginWithGoogle}
+                                    >
+                                        Sign In with Google
+                                    </Button>
                                 </Grid>
                                 <Grid item>
                                     <Link href="/signup" variant="body2">

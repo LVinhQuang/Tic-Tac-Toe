@@ -8,7 +8,7 @@ export default function Logout() {
     const navigate = useNavigate();
     const { setUserDetails } = useUserStore() as {setUserDetails: Function };
     useEffect(() => {
-        axios.post(BACKEND_SERVER + `/auth/logout`)
+        axios.post(BACKEND_SERVER + `/auth/logout`, {}, { withCredentials: true })
             .then((response) => {
                 if (response.status === 200) {
                     setUserDetails({ isLoggedIn: false, user: { fullname: "", email: "" } });

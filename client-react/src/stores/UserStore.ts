@@ -10,6 +10,7 @@ const useUserStore = create(
             user: {
                 fullname: "",
                 email: "",
+                score: "",
             },
             setUserDetails: (details: object) => set({ ...details })
         }),

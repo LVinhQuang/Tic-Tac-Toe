@@ -4,26 +4,36 @@ import cors from 'cors'
 import 'dotenv/config'
 import mongoose from 'mongoose'
 import authR from './routes/auth.r.js'
-
-
-const app = express();
-const PORT = process.env.port || 5000
-const URI = 'mongodb+srv://titanlight:4zlVQcEGxVs7Bt1u@cluster0.yijkebc.mongodb.net/'
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true, limit: '30mb'}));
-app.use(cors());
-
-// Passport config
 import passport from 'passport'
 import initializePassport from './passport-config.js'
 import session from 'express-session'
 import flash from 'express-flash'
+import MongoStore from 'connect-mongo'
+import http from 'http'
+import {Server} from 'socket.io'
+
+const app = express();
+const PORT = process.env.port || 5000
+const server = http.createServer(app);
+const dbUrl = process.env.DATABASE;
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true, limit: '30mb'}));
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
+
+// Passport config
 initializePassport(passport)
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true,
+    store: MongoStore.create({mongoUrl: dbUrl, collectionName: 'sessions'}),
+    cookie: {
+        maxAge: 60000*60
+    }
 }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -32,10 +42,27 @@ app.get('/', (req,res) => {
     res.send("SUCCESS");
 })
 app.use('/auth', authR);
-mongoose.connect(URI, {useNewUrlParser: true, useUnifiedTopology: true})
+
+//Socket.io
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
+
+io.on('connection', (client) => {
+    console.log('Client connected');
+    client.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+})
+
+//Connect server
+mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => {
     console.log('Connected to database')
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`)
     })
 })

@@ -1,14 +1,13 @@
 import accountM from '../models/account.m.js'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 
 export default {
     signup: (req,res,next) => {
         try {
             const acc = req.body;
-            console.log(acc);
             var pw = bcrypt.hashSync(acc.password, 10);
             acc.password = pw;
+            acc.score = 0;
             const newAcc = new accountM(acc);
             newAcc.save();
             res.status(200).send('OK')
@@ -19,7 +18,7 @@ export default {
             next(e);
         }
     },
-    login: async (req,res,next) => {
+    login: (req,res,next) => {
         const user = req.user;
         res.json({user: user, message: 'Logged in'})
     },
