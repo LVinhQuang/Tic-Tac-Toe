@@ -15,8 +15,7 @@ function App() {
       axios.get(GOOGLE_API+'/success', {withCredentials: true})
       .then((response) => {
         if (response.status === 200) {
-          console.log(response.data);
-          setUserDetails({ isLoggedIn: true, user: response.data.user });
+          setUserDetails({ isLoggedIn: true, user: response.data.user, isInRoom: '' });
         }
       })
       .catch(e => {
@@ -25,7 +24,6 @@ function App() {
     }
     getUser();
   },[])
-  console.log(user);
   return (
     <>
       <Routes>

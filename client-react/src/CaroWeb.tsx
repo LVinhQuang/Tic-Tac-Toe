@@ -6,8 +6,10 @@ import Logout from './pages/Logout'
 import { Grid } from '@mui/material'
 import { Sidebar } from './components/Sidebar'
 import { socket } from './socket'
+import Room from './pages/Room'
 
 export const CaroWeb = () => {
+  socket.connect();
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [fooEvents, setFooEvents] = useState([]);
 
@@ -37,6 +39,7 @@ export const CaroWeb = () => {
         </Grid>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path='/room/:roomId' element={<Room />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

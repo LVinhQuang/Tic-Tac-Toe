@@ -17,6 +17,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import bgImg from './catbox.jpg'
 import { BACKEND_SERVER, GOOGLE_API } from '../backendkey'
 import useUserStore from '../stores/UserStore'
+import { ConstructionOutlined } from '@mui/icons-material';
 
 function Copyright(props: any) {
     return (
@@ -36,7 +37,7 @@ const defaultTheme = createTheme();
 
 export default function Login() {
     const navigate = useNavigate();
-    const { isInitialized, isLoggedIn, setUserDetails } = useUserStore() as { isInitialized: boolean, setUserDetails: Function, isLoggedIn: boolean };
+    const { isInitialized, isLoggedIn,setUserDetails } = useUserStore() as { isInitialized: boolean, setUserDetails: Function,user:  object,isLoggedIn: boolean };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -50,7 +51,7 @@ export default function Login() {
         },{withCredentials: true})
             .then((response) => {
                 if (response.status === 200) {
-                    setUserDetails({ isLoggedIn: true, user: response.data });
+                    setUserDetails({ isLoggedIn: true, user: response.data.user, isInRoom: false});
                     navigate('/');
                 }
             })

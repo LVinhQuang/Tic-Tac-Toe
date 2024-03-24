@@ -12,11 +12,12 @@ const useUserStore = create(
                 email: "",
                 score: "",
             },
+            isInRoom: "",
             setUserDetails: (details: object) => set({ ...details })
         }),
         {
             name: 'user-storage',
-            storage: createJSONStorage(() => localStorage),
+            storage: createJSONStorage(() => sessionStorage),
         }
     )
 );
