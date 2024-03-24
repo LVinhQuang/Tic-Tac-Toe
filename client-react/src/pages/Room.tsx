@@ -37,9 +37,15 @@ export default () => {
       setStartGame(true);
       setStartPopUp(true);
     })
+    socket.on('resetGame',()=> {
+      setStartGame(false);
+      socket.emit('getRoomDetails', { roomId: roomId });
+    })
     return () => {
       socket.off('roomDetails');
       socket.off('connect')
+      socket.off('startGame')
+      socket.off('resetGame')
     }
   }, [])
   const changeReadyStatus = () => {
@@ -49,6 +55,9 @@ export default () => {
     socket.emit('leaveRoom', {roomId: roomId, userData: user });
     setUserDetails({ isInRoom: '' })
     Navigate('/');
+  }
+  const handleClose = () => {
+    socket.emit('resetGame',{roomId: roomId});
   }
   return (
     <>
@@ -64,7 +73,7 @@ export default () => {
                 <Button onClick={() => leaveRoom()} variant='contained' color='primary' sx={{ width: '30%', height: '50px', fontSize: '20px', fontWeight: 'bold', margin: '5px', backgroundColor: 'red' }}>leave Room</Button>
                 {room.players.length == 2 && <Button onClick={() => changeReadyStatus()} variant='contained' color='primary' sx={{ width: '30%', height: '50px', fontSize: '20px', fontWeight: 'bold', margin: '5px' }}>{room.players[playerIndex-1].isReady ? 'Unready': 'Ready'}</Button>}
             </Box>
-            {startGame && <Gameboard playerIndex={playerIndex}/>}
+            {startGame && <Gameboard playerIndex={playerIndex} handleClose={handleClose}/>}
         </Box>
       </Grid>
     </>

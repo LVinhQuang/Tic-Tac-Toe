@@ -125,6 +125,18 @@ io.on('connection', (socket) => {
         socket.leave(roomId);
         updateRoom(roomId, userData, false);
     })
+    socket.on('move', (data) => {
+        socket.broadcast.emit('move', {i: data.i,j: data.j});
+    })
+    socket.on('resetGame', (data) => {
+        console.log("RESET GAME")
+        const roomId = data.roomId;
+        const roomIndex = rooms.findIndex(room => room.roomId === roomId);
+        rooms[roomIndex].players.forEach(player => {
+            player.isReady = false;
+        });
+        io.to(roomId).emit('resetGame');
+    })
 });
 
 //Connect server

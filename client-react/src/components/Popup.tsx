@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export const Popup = (props: {trigger: boolean, setTrigger:React.Dispatch<React.SetStateAction<boolean>> ,timeOut: number, children: React.ReactElement}) => {
+export const Popup = (props: {trigger: boolean, setTrigger:React.Dispatch<React.SetStateAction<boolean>> ,timeOut: number, children: React.ReactElement, handleClose?: ()=> void}) => {
     if (props.timeOut) {
         setTimeout(() => {
             props.setTrigger(false);
@@ -16,13 +16,13 @@ export const Popup = (props: {trigger: boolean, setTrigger:React.Dispatch<React.
         background: 'rgba(0, 0, 0, 0.7)',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'start',
         zIndex: 1000
     }}>
       <div className="popup-inner" style={{
         position: 'relative',
-        padding: '32px',
-        width: '80%',
+        padding: '15px',
+        width: '30%',
         maxWidth: '600px',
         background: '#fff',
         borderRadius: '8px',
@@ -32,8 +32,8 @@ export const Popup = (props: {trigger: boolean, setTrigger:React.Dispatch<React.
         justifyContent: 'center', // Chỉ định căn giữa theo chiều dọc
         alignItems: 'center'
       }}>
-        {!props.timeOut &&<button className="close-btn" onClick={() => props.setTrigger(false)}>close</button>}
         {props.children}
+        {!props.timeOut && <button className="close-btn" onClick={() => {props.setTrigger(false), props.handleClose?.()}}>close</button>}
       </div>
     </div>
   ) : (null)
