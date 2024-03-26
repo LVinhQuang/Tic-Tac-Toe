@@ -3,26 +3,31 @@ import React, { useEffect } from 'react'
 import useUserStore from '../stores/UserStore'
 import { socket } from '../socket';
 import { Popup } from './Popup';
+import axios from 'axios';
+import { BACKEND_SERVER } from '../backendkey';
 
 export const Gameboard = ({ playerIndex, handleClose }: { playerIndex: number,handleClose: ()=>void }) => {
+    const {user} = useUserStore() as {user: {email: string, fullname: string, score: number}};
     const [board, setBoard] = React.useState<Array<Array<number>>>(new Array(3).fill(new Array(3).fill(0)));
     const [resultPopUp, setResultPopUp] = React.useState<boolean>(false);
-    const [isWin, setIsWin] = React.useState<boolean>(false);
+    const [gameResult, setGameResult] = React.useState<number>(0);
     const [isMyTurn, setIsMyTurn] = React.useState<boolean>(playerIndex === 1);
     const opponentIndex = playerIndex === 1 ? 2 : 1;
     useEffect(() => {
         const winner = checkWin();
         if (winner) {
             if (winner === playerIndex) {
-                setIsWin(true);
+                setGameResult(1);
                 setResultPopUp(true)
+                axios.post(BACKEND_SERVER + '/api/update-score', { user: user,  score: 10}, {withCredentials: true});
             } else {
-                setIsWin(false);
+                setGameResult(-1);
                 setResultPopUp(true)
             }
         }
         if (checkDraw()) {
-            alert('Draw!');
+            setGameResult(0);
+            setResultPopUp(true);
         }
         socket.on('move', (data: { i: number, j: number }) => {
             check(data.i, data.j, opponentIndex);
@@ -77,7 +82,9 @@ export const Gameboard = ({ playerIndex, handleClose }: { playerIndex: number,ha
     return (
         <>
             <Popup trigger={resultPopUp} setTrigger={setResultPopUp} timeOut={0} handleClose={handleClose}>
-                <h1>You {isWin ? 'Win': "Lose" }!</h1>
+                <h1>
+                    {gameResult === 1 ? "You win!" : (gameResult === -1 ? "You lose!" : "Draw!")}
+                </h1>
             </Popup>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
                 {board.map((row, i) => (

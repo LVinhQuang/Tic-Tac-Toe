@@ -4,6 +4,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import mongoose from 'mongoose'
 import authR from './routes/auth.r.js'
+import updateScoreC from './controllers/updateScore.c.js'
 import passport from 'passport'
 import initializePassport from './passport-config.js'
 import session from 'express-session'
@@ -11,6 +12,7 @@ import flash from 'express-flash'
 import MongoStore from 'connect-mongo'
 import http from 'http'
 import { Server } from 'socket.io'
+import accountM from './models/account.m.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000
@@ -42,6 +44,7 @@ app.get('/', (req, res) => {
     res.send("SUCCESS");
 })
 app.use('/auth', authR);
+app.post('/api/update-score', updateScoreC.updateScore);
 
 //Socket.io
 const io = new Server(server, {
@@ -99,9 +102,15 @@ io.on('connection', (socket) => {
         socket.join(roomId);
         updateRoom(roomId, userData, true);
     })
-    socket.on('getRoomDetails',(data) => {
+    socket.on('getRoomDetails', async (data) => {
         const roomId = data.roomId;
         const room = rooms.find(room => room.roomId === roomId);
+        if (room.players.length === 2) {
+            let player1 = await accountM.findOne({email: room.players[0].email});
+            let player2 = await accountM.findOne({email: room.players[1].email});
+            room.players[0].score = player1.score;
+            room.players[1].score = player2.score;
+        }
         io.to(roomId).emit('roomDetails', {room: room});
     })
     socket.on('changeReadyStatus', (data) => {
