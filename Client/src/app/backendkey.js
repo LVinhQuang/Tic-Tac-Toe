@@ -1,1 +1,0 @@
-export const BACK_END_SERVER = "https://localhost:5000";
