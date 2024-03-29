@@ -30,6 +30,11 @@ export default function Home() {
         if (roomId == null) {
             roomId = uuidv4();
         }
+        let targetRoom = rooms.find(room => room.roomId === roomId);
+        if (targetRoom?.players.length === 2) {
+            alert('Room is full');
+            return;
+        }
         socket.emit('joinRoom', { roomId: roomId, userData: user });
         setUserDetails({isInRoom: roomId});
         Navigate('/room/'+roomId);

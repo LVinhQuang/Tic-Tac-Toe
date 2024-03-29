@@ -16,7 +16,7 @@ export const CaroWeb = () => {
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);
-      console.log("Connected",socket.id)
+      console.log("Connected",socket)
     }
 
     function onDisconnect() {

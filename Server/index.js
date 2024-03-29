@@ -76,9 +76,9 @@ function updateRoom(roomId, playerData, joining) {
             else {
                 rooms[roomIndex].players[0].isReady = false;
             }
-            io.emit('currentRooms', {rooms: rooms});
-            io.to(roomId).emit('roomDetails', {room: rooms[roomIndex]});
         }
+        io.emit('currentRooms', {rooms: rooms});
+        io.to(roomId).emit('roomDetails', {room: rooms[roomIndex]});
     }
     else {
         rooms.push({roomId: roomId, roomName: playerData.fullname, players: [playerData]});
@@ -89,7 +89,14 @@ function updateRoom(roomId, playerData, joining) {
 io.on('connection', (socket) => {
     const userId = socket.id;
     console.log('Client connected: ',userId);
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (reason) => {
+        console.log(reason);
+        //find room id that rooms have userId
+        const roomIndex = rooms.findIndex(room => room.players.some(player => player.socketId === userId));
+        if (roomIndex !== -1) {
+            const playerData = rooms[roomIndex].players.find(player => player.socketId === userId);
+            updateRoom(rooms[roomIndex].roomId, playerData, false);
+        }
         console.log('Client disconnected: ',userId);
     })
     socket.on('currentRooms', () => {
@@ -98,6 +105,7 @@ io.on('connection', (socket) => {
     socket.on('joinRoom', (data) => {
         let roomId = data.roomId;
         let userData= data.userData;
+        userData.socketId = userId;
         userData.isReady = false;
         socket.join(roomId);
         updateRoom(roomId, userData, true);

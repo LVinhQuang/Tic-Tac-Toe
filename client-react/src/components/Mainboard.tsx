@@ -15,7 +15,10 @@ export const Mainboard = ({rooms,joinRoom}:{rooms: Array<Room>, joinRoom: Functi
     <Box display='flex' flexDirection='column' alignItems='center' m={2} p={2} sx={{ border: '2px solid gray', height: '85%' }}>
       <Button onClick={()=>joinRoom(null)} variant='contained' color='primary' sx={{ width: '30%', height: '50px', fontSize: '20px', fontWeight: 'bold' }}>Create Room</Button>
       {rooms.map((room) => (
-        <button key={room.roomId} style={{ width: '100%' }} onClick={() => joinRoom(room.roomId)}>{room.players[0].fullname}</button>
+        <>
+          {room.players.length === 1 &&
+          <button key={room.roomId} style={{ width: '100%' }} onClick={() => joinRoom(room.roomId)}>{room.players[0].fullname}</button>}
+        </>
       ))}
     </Box>
   )

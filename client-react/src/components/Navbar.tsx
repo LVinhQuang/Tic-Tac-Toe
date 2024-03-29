@@ -10,7 +10,7 @@ import useUserStore from '../stores/UserStore';
 
 export default function ButtonAppBar() {
   const Navigate = useNavigate();
-  const { isLoggedIn, user } = useUserStore() as { isLoggedIn: boolean, user: object };
+  const { isLoggedIn, user } = useUserStore() as { isLoggedIn: boolean, user: { fullname: string, email: string, score: number }};
   const handleLogin = () => {
     Navigate('/login');
   }
@@ -28,7 +28,10 @@ export default function ButtonAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            TIC TAC TOE
+          </Typography>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {isLoggedIn ? user['fullname'] : ''}
           </Typography>
           {
             isLoggedIn === false ?
