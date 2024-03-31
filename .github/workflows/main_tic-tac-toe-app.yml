@@ -21,7 +21,14 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: npm install, build, and test
+      - name: Install client dependencies and build
+        working-directory: ./client-react
+        run: |
+          npm install
+          npm run build --if-present
+
+      - name: Install server dependencies and build
+        working-directory: ./Server
         run: |
           npm install
           npm run build --if-present
