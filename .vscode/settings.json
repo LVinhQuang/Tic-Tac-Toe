@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/e622f295-b6ca-412a-a0d7-0a3ccbe0e85f/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/tic-tac-toe-app",
+    "appService.deploySubpath": "."
+}
