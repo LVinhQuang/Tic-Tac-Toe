@@ -39,7 +39,7 @@ jobs:
         context: ./Server
         push: true
         tags: registry0104.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_a6abcf48a0a1429abf5304d5dfdb4b38 }}/samples/tic-tac-toe:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./Server/Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
