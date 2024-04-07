@@ -21,7 +21,9 @@ jobs:
     - name: create .env file
       run: |
           echo "PORT = ${{vars.PORT}}" > ./Server/.env
-          echo "my PORT ${{vars.PORT}}"
+          echo "GOOGLE_CLIENT_ID = ${{secrets.GOOGLE_CLIENT_ID}}" >> ./Server/.env
+          echo "GOOGLE_CLIENT_SECRET = ${{secrets.GOOGLE_CLIENT_SECRET}}" >> ./Server/.env
+          echo "my PORT ${{secrets.GOOGLE_CLIENT_SECRET}}"
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
