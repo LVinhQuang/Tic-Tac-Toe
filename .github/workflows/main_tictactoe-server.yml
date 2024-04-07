@@ -36,10 +36,10 @@ jobs:
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
+        context: ./Server
         push: true
         tags: registry0104.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_a6abcf48a0a1429abf5304d5dfdb4b38 }}/samples/tic-tac-toe:${{ github.sha }}
         file: ./Dockerfile
-        working-directory: ./Server
 
   deploy:
     runs-on: ubuntu-latest
