@@ -1,5 +1,5 @@
 FROM node:18-alpine
-WORKDIR /app
+WORKDIR /Server/app
 COPY . .
 RUN ls -la
 RUN yarn install --production
