@@ -15,7 +15,7 @@ import { Server } from 'socket.io'
 import accountM from './models/account.m.js';
 
 const app = express();
-const PORT = process.env.PORT || 443
+const PORT = process.env.PORT || 5000
 const server = http.createServer(app);
 const dbUrl = process.env.DATABASE;
 

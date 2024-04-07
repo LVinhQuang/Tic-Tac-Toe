@@ -20,7 +20,7 @@ jobs:
 
     - name: create .env file
       run: |
-          echo "${{vars.PORT}}" > ./Server/env
+          echo "${{vars.PORT}}" > ./Server/.env
           echo "my PORT ${{vars.PORT}}"
 
     - name: Set up Docker Buildx
