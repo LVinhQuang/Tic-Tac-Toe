@@ -21,9 +21,13 @@ jobs:
     - name: create .env file
       run: |
           echo "PORT = ${{vars.PORT}}" > ./Server/.env
+          echo "CLIENT_URL = ${{vars.CLIENT_URL}}" >> ./Server/.env
+          echo "SERVER_URL = ${{vars.SERVER_URL}}" >> ./Server/.env
+
           echo "GOOGLE_CLIENT_ID = ${{secrets.GOOGLE_CLIENT_ID}}" >> ./Server/.env
           echo "GOOGLE_CLIENT_SECRET = ${{secrets.GOOGLE_CLIENT_SECRET}}" >> ./Server/.env
           echo "DATABASE = ${{secrets.DATABASE}}" >> ./Server/.env
+          echo "SESSION = ${{secrets.SESSION_SECRET}}" >> ./Server/.env
           echo "my PORT ${{secrets.GOOGLE_CLIENT_SECRET}}"
 
     - name: Set up Docker Buildx
