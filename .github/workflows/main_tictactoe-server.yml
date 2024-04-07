@@ -18,9 +18,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Set up environment
+      run: |
+        echo "Setting up environment"
+      working-directory: Server
+
     - name: create .env file
       run: |
-          echo "${{vars.PORT}}" > Server/.env
+          echo "${{vars.PORT}}" > .env
           echo "my PORT ${{vars.PORT}}"
 
     - name: Set up Docker Buildx
@@ -38,7 +43,7 @@ jobs:
       with:
         push: true
         tags: registry0104.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_a6abcf48a0a1429abf5304d5dfdb4b38 }}/samples/tic-tac-toe:${{ github.sha }}
-        file: ./Server/Dockerfile
+        file: ./Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
