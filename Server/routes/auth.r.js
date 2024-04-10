@@ -6,7 +6,7 @@ import passport from 'passport'
 
 router.post('/signup', authC.signup)
 router.get('/login', authC.login);
-router.post('/login',passport.authenticate('local',{successRedirect: '/login'}))
+router.post('/login',passport.authenticate('local'), authC.login)
 router.post('/logout',authC.logout)
 
 router.get('/google',passport.authenticate('google', {scope: ['profile', 'email']}))
