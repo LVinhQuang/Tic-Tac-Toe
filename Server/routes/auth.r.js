@@ -17,6 +17,7 @@ router.get('/google/failure', (req,res) => {
 router.get('/google/success', async (req,res) => {
     if (req.user) {
         const user = req.user;
+        console.log("AUTH ROUTER:",user)
         res.json({user: user, message: 'Logged in'})
     }
 })

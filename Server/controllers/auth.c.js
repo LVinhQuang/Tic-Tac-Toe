@@ -20,6 +20,7 @@ export default {
     },
     login: (req,res,next) => {
         const user = req.user;
+        console.log("AUTH CONTROLLER:",user)
         res.json({user: user, message: 'Logged in'})
     },
     logout: async (req,res,next) => {
