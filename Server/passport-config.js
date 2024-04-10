@@ -13,6 +13,7 @@ function initialize(passport) {
         }
         try {
             if (bcrypt.compareSync(password, user.password)) {
+                console.log("AUTHENTICATE USER:",user)
                 return done(null, user)
             }
             else {
