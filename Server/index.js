@@ -22,7 +22,7 @@ const dbUrl = process.env.DATABASE;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }));
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: "*",
     credentials: true
 }));
 
