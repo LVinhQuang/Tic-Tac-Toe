@@ -10,9 +10,13 @@ router.post('/login',passport.authenticate('local'), authC.login)
 router.post('/logout',authC.logout)
 
 router.get('/google',passport.authenticate('google', {scope: ['profile', 'email']}))
-router.get('/google/callback',passport.authenticate('google', {failureRedirect: '/google/failure'}), function(req,res) {res.json(req.cookies)})
+router.get('/google/callback',passport.authenticate('google', {successRedirect:'google/temp', failureRedirect: '/google/failure'}))
 router.get('/google/failure', (req,res) => {
     res.send('Google authentication failed')
+})
+router.get('google/temp', (req,res) => {
+    console.log(req.cookies);
+    res.send('Google authentication success')
 })
 router.get('/google/success', async (req,res) => {
     if (req.user) {
