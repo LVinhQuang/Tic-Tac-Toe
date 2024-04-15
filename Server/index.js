@@ -15,6 +15,7 @@ import { Server } from 'socket.io'
 import accountM from './models/account.m.js';
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 5000
 const server = http.createServer(app);
 const dbUrl = process.env.DATABASE;
@@ -34,8 +35,8 @@ app.use(session({
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: dbUrl, collectionName: 'sessions' }),
     cookie: {
-        maxAge: 60000 * 60,
         sameSite: 'none',
+        maxAge: 60000 * 60,
         secure: true
     }
 }))
