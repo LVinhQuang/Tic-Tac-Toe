@@ -7,7 +7,7 @@ import axios from 'axios';
 import { BACKEND_SERVER } from '../backendkey';
 
 export const Gameboard = ({ playerIndex, handleClose }: { playerIndex: number,handleClose: ()=>void }) => {
-    const {user} = useUserStore() as {user: {email: string, fullname: string, score: number}};
+    const {user, setUserDetails} = useUserStore() as {user: {email: string, fullname: string, score: number}, setUserDetails: Function};
     const [board, setBoard] = React.useState<Array<Array<number>>>(new Array(3).fill(new Array(3).fill(0)));
     const [resultPopUp, setResultPopUp] = React.useState<boolean>(false);
     const [gameResult, setGameResult] = React.useState<number>(0);
@@ -20,6 +20,7 @@ export const Gameboard = ({ playerIndex, handleClose }: { playerIndex: number,ha
                 setGameResult(1);
                 setResultPopUp(true)
                 axios.post(BACKEND_SERVER + '/api/update-score', { user: user,  score: 10}, {withCredentials: true});
+                setUserDetails({isLoggedIn: true, user: {...user, score: user.score + 10}});
             } else {
                 setGameResult(-1);
                 setResultPopUp(true)
