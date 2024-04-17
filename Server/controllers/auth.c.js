@@ -21,7 +21,6 @@ export default {
     login: (req,res,next) => {
         const user = req.user;
         console.log("AUTH CONTROLLER:",user)
-        console.log("COOKIES: ",req.cookies)
         res.json({user: user, message: 'Logged in'})
     },
     logout: async (req,res,next) => {
