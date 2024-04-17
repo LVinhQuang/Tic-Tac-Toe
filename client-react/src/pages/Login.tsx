@@ -14,7 +14,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import bgImg from './catbox.jpg'
+import bgImg from '../assets/tictactoe.jpg'
 import { BACKEND_SERVER, GOOGLE_API } from '../backendkey'
 import useUserStore from '../stores/UserStore'
 import { ConstructionOutlined } from '@mui/icons-material';
@@ -128,22 +128,22 @@ export default function Login() {
                             >
                                 Sign In
                             </Button>
-                            <Grid container>
-                                <Grid item xs>
+                            <Grid container alignItems="center" justifyContent="center">
+                                <Grid item xs={6}>
                                     <Button
                                         type="submit"
-                                        fullWidth
                                         variant="contained"
-                                        sx={{ mt: 3, mb: 2 }}
                                         style={{ backgroundColor: 'red' }}
                                         onClick={loginWithGoogle}
                                     >
                                         Sign In with Google
                                     </Button>
-                                </Grid>
-                                <Grid item>
+                                </Grid >
+                                <Grid item xs={6}>
                                     <Link href="/signup" variant="body2">
-                                        {"Don't have an account? Sign Up"}
+                                        <span>
+                                            Don't have an account? Sign Up
+                                        </span>
                                     </Link>
                                 </Grid>
                             </Grid>
