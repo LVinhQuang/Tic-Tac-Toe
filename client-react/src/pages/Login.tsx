@@ -37,6 +37,7 @@ const defaultTheme = createTheme();
 
 export default function Login() {
     const navigate = useNavigate();
+    const [authenticationFailed, setAuthenticationFailed] = React.useState(false);
     const { isInitialized, isLoggedIn,setUserDetails } = useUserStore() as { isInitialized: boolean, setUserDetails: Function,user:  object,isLoggedIn: boolean };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -53,6 +54,9 @@ export default function Login() {
                 if (response.status === 200) {
                     setUserDetails({ isLoggedIn: true, user: response.data.user, isInRoom: false});
                     navigate('/');
+                }
+                if (response.status === 401) {
+                    setAuthenticationFailed(true);
                 }
             })
     }
@@ -119,6 +123,7 @@ export default function Login() {
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
+                            {authenticationFailed && <Typography color="error">Invalid email or password</Typography>}
                             <Button
                                 type="submit"
                                 fullWidth

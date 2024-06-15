@@ -13,7 +13,7 @@ router.get('/login/failure', (req,res) => {
 })
 
 router.post('/login',passport.authenticate('local', {
-    failureRedirect: '/login/failure',
+    failureRedirect: '/auth/login/failure',
 }), authC.login)
 
 
@@ -21,7 +21,7 @@ router.post('/logout',authC.logout)
 
 router.get('/google',passport.authenticate('google', {scope: ['profile', 'email']}))
 
-router.get('/google/callback',passport.authenticate('google', {failureRedirect: '/login/failure'}), function (req,res) {console.log("SESSION: ",req.session);res.redirect(process.env.CLIENT_URL)})
+router.get('/google/callback',passport.authenticate('google', {failureRedirect: '/auth/login/failure'}), function (req,res) {console.log("SESSION: ",req.session);res.redirect(process.env.CLIENT_URL)})
 
 
 router.get('/google/success', async (req,res) => {
