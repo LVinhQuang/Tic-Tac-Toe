@@ -55,10 +55,11 @@ export default function Login() {
                     setUserDetails({ isLoggedIn: true, user: response.data.user, isInRoom: false});
                     navigate('/');
                 }
-                if (response.status === 401) {
-                    setAuthenticationFailed(true);
-                }
             })
+            .catch((error) => {
+                if (error.response.status === 401)
+                    setAuthenticationFailed(true);
+            });
     }
     const loginWithGoogle = () => {
         window.open(GOOGLE_API, "_self");
