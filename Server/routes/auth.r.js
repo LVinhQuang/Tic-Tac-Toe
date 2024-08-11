@@ -30,6 +30,9 @@ router.get('/google/success', async (req,res) => {
         console.log("AUTH ROUTER:",user)
         res.json({user: user, message: 'Logged in'})
     }
+    else {
+        res.status(401).json({user: null, message: 'Invalid: unauthorized'})
+    }
 })
 
 export default router;

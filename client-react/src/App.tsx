@@ -14,8 +14,10 @@ function App() {
     const getUser = async () => {
       axios.get(GOOGLE_API+'/success', {withCredentials: true})
       .then((response) => {
-        if (response.status === 200) {
+        switch(response.status) {
+         case 200:
           setUserDetails({ isLoggedIn: true, user: response.data.user, isInRoom: '' });
+          break;
         }
       })
       .catch(e => {

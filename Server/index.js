@@ -18,7 +18,6 @@ const app = express();
 app.set("trust proxy", 1);
 const PORT = process.env.PORT || 5000
 const server = http.createServer(app);
-const dbUrl = process.env.DATABASE;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }));
@@ -33,11 +32,11 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: dbUrl, collectionName: 'sessions' }),
+    store: MongoStore.create({ mongoUrl: process.env.DATABASE, collectionName: 'sessions' }),
     cookie: {
         sameSite: 'none',
+        secure: true,
         maxAge: 60000 * 60,
-        secure: true
     }
 }))
 app.use(passport.initialize())
@@ -160,7 +159,7 @@ io.on('connection', (socket) => {
 });
 
 //Connect server
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('Connected to database')
         server.listen(PORT, () => {
